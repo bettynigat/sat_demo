@@ -9,9 +9,10 @@
 using namespace std;
 
 int CNF_SAT(int n, vector<vector<int>>edges){
+
     unique_ptr<Minisat::Solver> solver(new Minisat::Solver());
     vector<int> vertexCover; 
-    int k=1; 
+    int k=1; //initialize k value 
 
     while (k<n+1)
     {
@@ -82,11 +83,12 @@ int CNF_SAT(int n, vector<vector<int>>edges){
 
             sort(vertexCover.begin(),vertexCover.end());
             for (unsigned int i=0; i<vertexCover.size(); i++){
-                if (i==vertexCover.size()-1){
-                    cout<<vertexCover[i]<<endl;
+                cout<<vertexCover[i];
+                if (i!=vertexCover.size()-1){
+                    cout<<" ";
                 }
                 else{
-                    cout<<vertexCover[i]<<" ";
+                    cout<<endl;
                 }
             }
             solver.reset (new Minisat::Solver());
@@ -103,7 +105,9 @@ int CNF_SAT(int n, vector<vector<int>>edges){
 
 
 int main(){
+
     int vertex_no;
+
     while (!cin.eof()) {
         vector<vector<int>> edges;
         string line;
@@ -159,14 +163,8 @@ int main(){
                 edges.push_back(nums); 
             }
 
+            //Call the sat solver after parsing of edges is done
             CNF_SAT(vertex_no,edges);
-            // int result; 
-            // for (int i=1; i<vertex_no+1; i++){
-            //     int result = CNF_SAT(vertex_no,i, edges); 
-            //     if (result==1){ //means CNF SAT successful 
-            //         break; 
-            //     }
-            // }
         }
     }
 }
