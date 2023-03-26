@@ -25,7 +25,6 @@ int CNF_SAT(int n, vector<vector<int>>edges){
                 literals[j][i] = Minisat::mkLit(solver->newVar()); 
             }
         }
-
         //1. Create the first set of clauses
         //at least one vertex is the ith vertex in the vertex cover:
         for (int i=0; i<k; i++){
@@ -35,7 +34,6 @@ int CNF_SAT(int n, vector<vector<int>>edges){
             }
             solver->addClause(tempVar); //also try without using tempCLAUSE 
         }
-
         //2. Create the second set of clauses 
         //No one vertex can appear twice in a vertex cover
         for (int m=0; m<n; m++){
@@ -45,7 +43,6 @@ int CNF_SAT(int n, vector<vector<int>>edges){
                 }
             }
         }
-
         //3. Create the third set of clauses
         //No more than one vertex appears in the mth position of the vertex cover
         for(int m=0; m<k; m++){
@@ -55,7 +52,6 @@ int CNF_SAT(int n, vector<vector<int>>edges){
                 }
             }
         }
-
         //4. create the fouth set of clauses
         //Every edge is incident to at least one vertex in the vertex cover
         //the atomic prop is true iff the vertext end/start is the mth vertext in the vertext cover
@@ -69,18 +65,16 @@ int CNF_SAT(int n, vector<vector<int>>edges){
             }
             solver -> addClause(tempVar); 
         }
-
         //check if F is satisfiable. If so, print vertext cover and exit
         bool result = solver->solve();
         if(result==1){
-            for (int i=0; i<k ; i++){
-                for (int j=0; j<n; j++){
-                    if (Minisat::toInt(solver->modelValue(literals[i][j]))==0){
-                        vertexCover.push_back(j);
+            for (int l=0; l<k ; l++){
+                for (int m=0; m<n; m++){
+                    if (Minisat::toInt(solver->modelValue(literals[l][m]))==0){
+                        vertexCover.push_back(m);
                     }
                 }
             }
-
             sort(vertexCover.begin(),vertexCover.end());
             for (unsigned int i=0; i<vertexCover.size(); i++){
                 cout<<vertexCover[i];
@@ -94,12 +88,10 @@ int CNF_SAT(int n, vector<vector<int>>edges){
             solver.reset (new Minisat::Solver());
             return 1;    
         }
-
         //else continue with the next k element
         solver.reset (new Minisat::Solver());
         k++; 
     }
-
     return 0; 
 }
 
@@ -119,6 +111,10 @@ int main(){
         }
 
         else if (line[0] == 'E'){
+            //first check for empty string
+            if (line == "E {}"){
+                continue; 
+            }
             stringstream check1(line); 
             stringstream check2(line);
             string intermediate; 
